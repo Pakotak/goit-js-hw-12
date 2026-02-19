@@ -90,7 +90,7 @@ async function onSearch(event) {
 async function onLoadMore() {
   page += 1;
 
-  loadMoreBtn.disabled = true;
+  hideLoadMoreButton();
   showLoader();
 
   try {
@@ -107,13 +107,23 @@ async function onLoadMore() {
         position: "topRight",
       });
     } else {
-      loadMoreBtn.disabled = false;
+ 
+      showLoadMoreButton();
     }
   } catch (error) {
+
+    page -= 1;
+
     iziToast.error({
       message: "An error occurred while fetching images. Please try again later.",
       position: "topRight",
     });
+
+    if (page < totalPages) {
+      showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
+    }
   } finally {
     hideLoader();
   }
